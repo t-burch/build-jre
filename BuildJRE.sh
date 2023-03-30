@@ -21,15 +21,9 @@ if test -f "$JAR_FILE"; then
   done <<< "$CONF_JDEPS_COMMAND"
 
   readarray -t DEPENDENCIES < <(printf '%s\n' "${MODULE_DEPS[@]}" | awk '!x[$0]++')
-
-  # Unresolvable Necessary Runtime Components (Spring)
-  DEPENDENCIES+=("jdk.management.agent") # (JMX Agent. Required by Spring but possible to remove for other frameworks.)
-  DEPENDENCIES+=("java.security.jgss") # (GSS Handler. Required by Spring Web/Security but possible to remove in other circumstances.)
-  #
-
-  # " (Quarkus)
-  # DEPENDENCIES+=("jdk.zipfs") # (Jar/Zip Filesystem Handler. Required by Quarkus but possible to remove for other frameworks.)
-  #
+  readarray -t UNRESOLVABLE < ./.unresolvable.deps
+  
+  DEPENDENCIES+=(${UNRESOLVABLE[@]})
 
   MODULES_INSERT=$(printf ",%s" "${DEPENDENCIES[@]}")
   MODULES_INSERT=${MODULES_INSERT:1}
