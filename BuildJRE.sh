@@ -6,7 +6,7 @@ MVN_CLASSPATH_GRAPH=${MVN_CLASSPATH_GRAPH#*classpath:}
 MVN_CLASSPATH="${MVN_CLASSPATH_GRAPH%jar*}jar"
 
 # Configuration
-CONF_JAVA_VERSION=17
+CONF_JAVA_VERSION=$(cat ./pom.xml | tr -d '\n' | awk -F '<java.version>|</java.version>' '{print $2}')
 CONF_JDEPS_COMMAND=$(jdeps -recursive -summary --multi-release $CONF_JAVA_VERSION --class-path "$MVN_CLASSPATH" "$JAR_FILE")
 CONF_CUSTOM_JRE_OUT_FOLDER="custom-jre"
 #
