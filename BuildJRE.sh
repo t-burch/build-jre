@@ -1,6 +1,5 @@
 #!/bin/bash
-PROJECT_NAME=$(basename "$PWD")
-JAR_FILE=$(find ./target/ -maxdepth 1 -name "$PROJECT_NAME-*.jar")
+JAR_FILE=$(find ./target/ -maxdepth 1 -name "*.jar")
 MVN_CLASSPATH_GRAPH=$(mvn dependency:build-classpath)
 MVN_CLASSPATH_GRAPH=${MVN_CLASSPATH_GRAPH#*classpath:}
 MVN_CLASSPATH="${MVN_CLASSPATH_GRAPH%jar*}jar"
